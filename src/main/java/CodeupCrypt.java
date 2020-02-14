@@ -1,9 +1,11 @@
 import org.apache.commons.lang3.StringUtils;
 import util.Input;
+import java.util.Random;
 
 public class CodeupCrypt {
     private final static char[] HASH_INITIAL = {'A', 'a', 'E', 'e', 'I', 'i', 'O', 'o', 'U', 'u', 'T', 't'};
-    private final static char[] HASH_KEY = {'4', '4', '3', '3', '1', '1', '0', '0', '9', '9', '@', '@'};
+    private final static char[] HASH_KEY_ONE = {'4', '4', '3', '3', '1', '1', '0', '0', '9', '9', '@', '@'};
+    private final static char[] HASH_KEY_TWO = {'r', 'v', '&', '6', '2', 'i', 'j', '[', '|', '|', 'r', 'p'};
 
     public static void main(String[] args) {
         Input input = new Input();
@@ -31,11 +33,22 @@ public class CodeupCrypt {
     }
 
     public static String hash(String inputPassword) {
+        Random random = new Random();
+        char[] hashKey = new char[0];
+        int rand_int = random.nextInt(2);
+        switch (rand_int) {
+            case 0:
+                hashKey = HASH_KEY_ONE.clone();
+                break;
+            case 1:
+                hashKey = HASH_KEY_TWO.clone();
+                break;
+        }
         char[] inputPasswordChars = inputPassword.toCharArray();
         for (int i = 0; i < inputPasswordChars.length; i++) {
             for (int j = 0; j < HASH_INITIAL.length; j++) {
                 if (inputPasswordChars[i] == HASH_INITIAL[j]) {
-                    inputPasswordChars[i] = HASH_KEY[j];
+                    inputPasswordChars[i] = hashKey[j];
                 }
             }
         }
@@ -46,8 +59,8 @@ public class CodeupCrypt {
     public static String decryptHash(String inputEncrypted) {
         char[] inputEncryptedChars = inputEncrypted.toCharArray();
         for (int i = 0; i < inputEncryptedChars.length; i++) {
-            for (int j = HASH_KEY.length - 1; j > 0; j--) {
-                if (inputEncryptedChars[i] == HASH_KEY[j]) {
+            for (int j = HASH_KEY_ONE.length - 1; j > 0; j--) {
+                if (inputEncryptedChars[i] == HASH_KEY_ONE[j]) {
                     inputEncryptedChars[i] = HASH_INITIAL[j];
                 }
             }
