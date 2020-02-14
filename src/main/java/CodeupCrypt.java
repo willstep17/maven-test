@@ -20,4 +20,5 @@ public class CodeupCrypt {
         }
         return new String(inputPasswordChars);
     }
+
 }
